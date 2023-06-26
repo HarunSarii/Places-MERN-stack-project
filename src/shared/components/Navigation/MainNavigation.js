@@ -2,6 +2,7 @@ import React from 'react'
 import MainHeader from './MainHeader'
 import { Link } from 'react-router-dom'
 import './MainNavigation.css';
+import NavLinks from './NavLinks';
 
 const MainNavigation = () => {
   return (
@@ -17,6 +18,7 @@ const MainNavigation = () => {
           <Link to="/">YourPlaces</Link>
         </h1>
         <nav className="main-navigation__header-nav">
+          <NavLinks />
         </nav>
       </MainHeader>
   )
