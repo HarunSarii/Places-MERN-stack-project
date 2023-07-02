@@ -1,8 +1,11 @@
 import React from 'react'
+import './NewPlace.css'
 
 const NewPlace = () => {
   return (
-    <div>NewPlace</div>
+    <form className='place-form' >
+      
+    </form>
   )
 }
 
