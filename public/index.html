@@ -25,11 +25,20 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCppM1VYXuDGO7Y4WgYDsJi8RhjTuj4yJo"
-      async
-      defer
-  ></script>
+    <script>
+      function initializeMap() {
+        const rootElement = document.getElementById("root");
+        ReactDOM.render(<App />, rootElement);
+      }
+    </script>
+    <script>
+      const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initializeMap`;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

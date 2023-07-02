@@ -6,12 +6,27 @@ const Map = (props) => {
   const { center, zoom } = props;
 
   useEffect(() => {
-    const map = new window.google.maps.Map(mapRef.current, {
-      center: center,
-      zoom: zoom
-    });
+    const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
-    new window.google.maps.Marker({ position: center, map: map });
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = initializeMap;
+    document.head.appendChild(script);
+
+    function initializeMap() {
+      const map = new window.google.maps.Map(mapRef.current, {
+        center: center,
+        zoom: zoom
+      });
+
+      new window.google.maps.Marker({ position: center, map: map });
+    }
+
+    return () => {
+      document.head.removeChild(script);
+    };
   }, [center, zoom]);
 
   return (
