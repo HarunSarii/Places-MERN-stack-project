@@ -33,7 +33,7 @@ const Auth = () => {
       setFormData(
         {
           ...formState.inputs,
-          name: undefined
+          name: undefined,
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
@@ -52,9 +52,30 @@ const Auth = () => {
     setIsLoginMode((prevMode) => !prevMode);
   };
 
-  const authSubmitHandler = (event) => {
+  const authSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log("inputs:", formState.inputs);
+    if (isLoginMode) {
+    } else {
+      try {
+        const response = await fetch("http://localhost:5000/api/users/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formState.inputs.name.value,
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+        });
+
+        const responseData = await response.json();
+        console.log("responseData:", responseData);
+      } catch (err) {
+        console.log("err", err);
+      }
+    }
+
     auth.login();
   };
 
@@ -97,8 +118,9 @@ const Auth = () => {
           {isLoginMode ? "LOGIN" : "SIGNUP"}
         </Button>
       </form>
-      <Button onClick={switchModeHandler} inverse>{`SWITCH TO ${!isLoginMode ? "LOGIN" : "SIGNUP"
-        } `}</Button>
+      <Button onClick={switchModeHandler} inverse>{`SWITCH TO ${
+        !isLoginMode ? "LOGIN" : "SIGNUP"
+      } `}</Button>
     </Card>
   );
 };
