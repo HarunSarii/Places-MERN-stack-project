@@ -1,19 +1,20 @@
 import React, { useState, useContext } from "react";
-import Button from "../../shared/components/FormElements/Button";
-import Input from "../../shared/components/FormElements/Input";
+
 import Card from "../../shared/components/UIElements/Card";
-import { useForm } from "../../shared/hooks/form-hook";
+import Input from "../../shared/components/FormElements/Input";
+import Button from "../../shared/components/FormElements/Button";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
+import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 import {
-  VALIDATOR_MINLENGTH,
   VALIDATOR_EMAIL,
+  VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE,
 } from "../../shared/util/validators";
+import { useForm } from "../../shared/hooks/form-hook";
 import { useHttpClient } from "../../shared/hooks/http-hook";
-import "./Auth.css";
 import { AuthContext } from "../../shared/context/auth-context";
-import ImageUpload from "../../shared/components/FormElements/ImageUpload";
+import "./Auth.css";
 
 const Auth = () => {
   const auth = useContext(AuthContext);
@@ -65,7 +66,6 @@ const Auth = () => {
 
   const authSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log("inputs:", formState.inputs);
 
     if (isLoginMode) {
       try {
@@ -80,7 +80,7 @@ const Auth = () => {
             "Content-Type": "application/json",
           }
         );
-        auth.login(responseData.user.id);
+        auth.login(responseData.userId, responseData.token);
       } catch (err) {}
     } else {
       try {
@@ -95,7 +95,7 @@ const Auth = () => {
           formData
         );
 
-        auth.login(responseData.user.id);
+        auth.login(responseData.userId, responseData.token);
       } catch (err) {}
     }
   };
@@ -110,8 +110,8 @@ const Auth = () => {
         <form onSubmit={authSubmitHandler}>
           {!isLoginMode && (
             <Input
-              id="name"
               element="input"
+              id="name"
               type="text"
               label="Your Name"
               validators={[VALIDATOR_REQUIRE()]}
@@ -128,8 +128,8 @@ const Auth = () => {
             />
           )}
           <Input
-            id="email"
             element="input"
+            id="email"
             type="email"
             label="E-Mail"
             validators={[VALIDATOR_EMAIL()]}
@@ -137,9 +137,9 @@ const Auth = () => {
             onInput={inputHandler}
           />
           <Input
+            element="input"
             id="password"
             type="password"
-            element="input"
             label="Password"
             validators={[VALIDATOR_MINLENGTH(6)]}
             errorText="Please enter a valid password, at least 6 characters."
