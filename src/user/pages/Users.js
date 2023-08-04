@@ -6,7 +6,7 @@ import { useHttpClient } from "../../shared/hooks/http-hook";
 
 const Users = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [loadedUsers, setLoadedUsers] = useState();
+  const [loadedUsers, setLoadedUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -29,7 +29,7 @@ const Users = () => {
           <LoadingSpinner />
         </div>
       )}
-      {!isLoading && loadedUsers && <UsersList items={loadedUsers} />}
+      {!isLoading && loadedUsers.length > 0 && <UsersList items={loadedUsers} />}
     </React.Fragment>
   );
 };
